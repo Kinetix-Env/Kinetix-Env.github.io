@@ -1,0 +1,13 @@
+.canvasDiv
+{
+  text-align: center;
+  height: 94%;
+}
+
+.myCanvas{
+  margin: auto
+}
+
+body {
+  background-color: red!important;
+}
