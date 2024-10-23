@@ -4,18 +4,21 @@
     <meta charset="UTF-8" />
     <title>Kinetix</title>
     <!-- <style rel="stylesheet" href="index.css"></style> -->
-     <style>
-      .active-button{
-        background-color: #D3D3D3; /* Even Darker Grey */
-        transform: scale(0.98); /* Slightly scale down when pressed */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add some shadow on active */
-      }
-     </style>
+     <!-- <style> -->
+
   </head>
   <body style="margin: 0px; overflow: hidden;"  oncontextmenu="return false;">
     <script src="bundle.js"></script>
     <!-- <div id="canvasDiv" class="canvasDiv">
       <canvas></canvas>
     </div> -->
+    <!-- <button id="loginButton">Click to Login</button> -->
+
+    <div class="top-right" id="loginDiv">
+      <p id="usernameP">Username</p>
+      <button id="loginButton"><span class="login-icon">🔑</span> Login</button>
+      <button class="signout-btn" id="signoutButton">Sign Out</button>
+  </div>
+
   </body>
 </html>
