@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centered Wider Child Div</title>
+<style>
+  /* Parent div */
+  .parent {
+    width: 80%;      /* Set a width for the parent */
+    margin: 0 auto;  /* Center the parent div on the page */
+    background-color: lightgray;
+    padding: 20px;
+    position: relative;  /* Required for child positioning */
+  }
+
+  /* Child div */
+  .child {
+    width: 120%;         /* Make the child div wider than the parent */
+    position: absolute;  /* Absolute positioning to allow centering */
+    left: 50%;           /* Start from the middle of the parent */
+    transform: translateX(-50%); /* Center the child horizontally */
+    background-color: lightblue;
+    padding: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="parent">
+  <div class="child">
+    I am a wider, centered child div!
+  </div>
+</div>
+
+</body>
+</html>
