@@ -336,7 +336,8 @@
   
   .iframeContainerDiv{
     position: relative;
-    width: 80vw; 
+    width: 100%;
+    text-align: center;
     height: 90vh;
   }
 
@@ -351,7 +352,6 @@
 
     .iframeContainerDiv{
       position: relative;
-      width: min(100vw, 100vh);
       height: min(100vw, 100vh);
       
     }
@@ -374,16 +374,19 @@
   .spinner {
     border: 8px solid #f3f3f3;
     border-top: 8px solid #3498db;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
     animation: spin 1s linear infinite;
+    /*top: calc(50% - 32px);
+    left: calc(50% - 24px  - 13vw);
+    width: 100%;
+    ;*/
+    border-radius: 50%;
+    height: 48px;
+    width: 48px;
     margin: auto;
     position: absolute;
+    left: calc(50% - 24px);
 
     
-    top: calc(50% - 32px);
-    left: calc(50% - 24px  - 13vw);
   }
 
   @keyframes spin {
