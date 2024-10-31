@@ -2108,9 +2108,9 @@ d-appendix > distill-appendix {
         <p><em>Not published yet.</em></p>`}
     </div>
     <div>
-      <h3>DOI</h3>
+      <h3>ArXiv</h3>
       ${frontMatter.doi ? `
-        <p><a href="https://doi.org/${frontMatter.doi}">${frontMatter.doi}</a></p>` : `
+        <p><a href="https://arxiv.org/abs/${frontMatter.doi}">${frontMatter.doi}</a></p>` : `
         <p><em>No DOI yet.</em></p>`}
     </div>
     <p style="color: #4e4e4e">* Equal contribution</p>
