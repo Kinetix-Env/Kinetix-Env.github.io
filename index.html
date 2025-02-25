@@ -375,13 +375,16 @@
     border: 8px solid #f3f3f3;
     border-top: 8px solid #3498db;
     animation: spin 1s linear infinite;
-    /*top: calc(50% - 32px);
+    /*
+    z-index: 100001;
+    top: calc(50% - 32px);
+    top: calc(50% - 32px);
     left: calc(50% - 24px  - 13vw);
     width: 100%;
     ;*/
     border-radius: 50%;
-    height: 48px;
-    width: 48px;
+    height: 51px;
+    width: 51px;
     margin: auto;
     position: absolute;
     left: calc(50% - 24px);
@@ -402,8 +405,8 @@
   <!-- <distill-header></distill-header> -->
   <d-front-matter>
     <script id='distill-front-matter' type="text/json">{
-    "title": "Kinetix: Investigating the Training of General Agents through Open-Ended Physics-Based Control Tasks",
-    "description": "Investigating large-scale training of RL agents in a vast and diverse space of simulated tasks",
+    "title": "Kinetix",
+    "description": "Investigating the Training of General Agents through Open-Ended Physics-Based Control Tasks.",
     "published": "October 31, 2024",
     "doi": "2410.23208",
     "authors": [
@@ -496,14 +499,14 @@
       <h2 id="tldr">TL; DR</h2>
       <p>
         <code>Kinetix</code> is an open-ended reinforcement learning (RL) framework for 2D physics-based
-        control tasks, which can represent a <strong>wide</strong> range of tasks, from mazes, to video-game-based
-        environments, to
+        control tasks, which can represent a <strong>diverse</strong> range of environments, from mazes, to video-games, to
         complex manipulation problems, and everything in between.
-        Despite this broad range of expressible tasks,
         <code>Kinetix</code> can run at <strong>millions of steps per second</strong> on a single GPU by using <a
-          href="https://github.com/jax-ml/jax">JAX</a>, enabling the
-        feasible large-scale
-        training of reinforcement learning agents.
+          href="https://github.com/jax-ml/jax">JAX</a>, unlocking large-scale
+        training of general reinforcement learning agents.
+
+        All environments in <code>Kinetix</code> have the same goal: make the <span style="color:green">green</span> and <span style="color:blue">blue</span> touch, without <span style="color:green">green</span> touching <span style="color:red">red</span>.
+The agent can act through applying torque via motors and force via thrusters.  Through these simple rules, we can represent an astonishing array of tasks, all within a unified framework.
       </p>
     </div>
     <div>
@@ -603,14 +606,11 @@
         large-scale experiments, and because it is able to represent a wide range of semantically diverse tasks, as
         opposed to only small variations of the same task (e.g., different obstacle locations in a maze).</p>
 
-      <p>For this reason, we have also provided functionality to automatically generate environments, to be able to
-        apply
-        UED algorithms to <code>Kinetix</code>.
-        Specifically, we have a way to randomly generate levels, so methods such as DR, PLR and SFL can be used. We also
-        provide mutation operators, so something like ACCEL can also be applied. Beyond this, <code>Kinetix</code>
-        levels
-        can also be edited or created in arbitrary ways, and we are excited to see approaches like RL and generative
-        models being used in future!</p>
+      <p>We provide functionality to generate random environments, as well as code to run
+        autocurricula methods on this distribution.
+        We use this to train a general agent on randomly sampled levels and investigate its generalisation capabilities.
+        As well as autocurricula and RL generalisation methods, we believe <code>Kinetix</code> serves as an excellent foundation for future study into areas including agent network capacity, plasticity loss, lifelong learning, multi-task learning.
+        </p>
 
       <video autoplay="" muted="" loop="" playsinline="" style="width: 100%">
         <source src="assets/combined_wide11.mp4" type="video/mp4">
@@ -625,14 +625,14 @@
           <div class="my-center-content">
             <img src="assets/palette.png" width="20px" />
             <span>Go and see what levels other people have made in the <a
-                href="https://kinetix-env.github.io/editor/gallery.html">gallery</a>, and see how you perform vs. a
+                href="https://kinetix-env.github.io/gallery.html">gallery</a>, and see how you perform vs. a
               trained agent!</span>
           </div>
         </li><br>
         <li>
           <div class="my-center-content">
             <img src="assets/pencil.png" width="20px" /><span>Make your own levels in the <a
-                href="https://kinetix-env.github.io/editor/">editor</a>.</span>
+                href="https://kinetix-env.github.io/gallery.html?editor=true">editor</a>.</span>
           </div>
         </li><br>
         <li>
