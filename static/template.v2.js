@@ -104,6 +104,9 @@
     if (source.doi) {
       target.doi = source.doi;
     }
+    if (typeof source.equal_contribution !== 'undefined') {
+      target.equal_contribution = source.equal_contribution;
+    }
   }
 
   class FrontMatter {
@@ -2113,7 +2116,7 @@ d-appendix > distill-appendix {
         <p><a href="https://arxiv.org/abs/${frontMatter.doi}">${frontMatter.doi}</a></p>` : `
         <p><em>No DOI yet.</em></p>`}
     </div>
-    <p style="color: #4e4e4e">* Equal contribution</p>
+    ${frontMatter.equal_contribution === false ? '' : '<p style="color: #4e4e4e">* Equal contribution</p>'}
     </div>
 `;
   }

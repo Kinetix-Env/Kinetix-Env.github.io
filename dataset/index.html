@@ -1,0 +1,594 @@
+<!--
+  Copyright 2018 The Distill Template Authors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!doctype html>
+
+<head>
+  <script defer src="../static/template.v2.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf8">
+  <!-- favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<style id="distill-article-specific-styles">
+  .subgrid {
+    grid-column: screen;
+    display: grid;
+    grid-template-columns: inherit;
+    grid-template-rows: inherit;
+    grid-column-gap: inherit;
+    grid-row-gap: inherit;
+  }
+
+  d-figure.base-grid {
+    grid-column: screen;
+    background: hsl(0, 0%, 97%);
+    padding: 20px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  d-figure {
+    margin-bottom: 1em;
+    position: relative;
+  }
+
+  d-figure>figure {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .shaded-figure {
+    background-color: hsl(0, 0%, 97%);
+    border-top: 1px solid hsla(0, 0%, 0%, 0.1);
+    border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
+    padding: 30px 0;
+  }
+
+  .pointer {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    top: 26px;
+    left: -48px;
+  }
+
+  div#observablehq {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  button {
+    font-family: inherit;
+    font-size: 1em;
+  }
+
+  /* Alignment of KaTeX. */
+  #gnn-models span.katex-display {
+    margin: 0.5em 0 0.5em 0em;
+  }
+
+  @media (max-width: 1000px) {
+    d-contents {
+      justify-self: start;
+      align-self: start;
+      grid-column-start: 2;
+      grid-column-end: 6;
+      padding-bottom: 0.5em;
+      margin-bottom: 1em;
+      padding-left: 0.25em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-bottom-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    d-contents {
+      align-self: start;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: end;
+      padding-right: 3em;
+      padding-left: 2em;
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+      border-right-width: 1px;
+      border-right-style: solid;
+      border-right-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  @media (min-width: 1180px) {
+    d-contents {
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: end;
+      padding-right: 3em;
+      padding-left: 2em;
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+      border-right-width: 1px;
+      border-right-style: solid;
+      border-right-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  d-contents nav h3 {
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  d-contents nav a {
+    color: rgba(0, 0, 0, 0.8);
+    border-bottom: none;
+    text-decoration: none;
+  }
+
+  d-contents li {
+    list-style-type: none;
+  }
+
+  d-contents ul {
+    padding-left: 1em;
+  }
+
+  d-contents nav ul li {
+    margin-bottom: 0.25em;
+  }
+
+  d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6);
+  }
+
+  d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+
+  d-contents nav>div {
+    display: block;
+    outline: none;
+    margin-bottom: 0.5em;
+  }
+
+  d-contents nav>div>a {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  d-contents nav>div>a:hover,
+  d-contents nav>ul>li>a:hover {
+    text-decoration: none;
+  }
+
+  input[type="radio"] {
+    vertical-align: unset !important;
+  }
+
+  .math-details {
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0em;
+    padding-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .mycenter>.katex {
+    text-align: center;
+    width: 100%;
+  }
+
+  span.katex {
+    text-align: center;
+    width: 100%;
+    color: red !important;
+  }
+
+  .math-details {
+    padding-bottom: 1em !important;
+  }
+
+
+  .frame {
+    border: 0;
+
+    -ms-transform: scale(0.5) !important;
+    -moz-transform: scale(0.5) !important;
+    -o-transform: scale(0.5) !important;
+    -webkit-transform: scale(0.5) !important;
+    transform: scale(0.5) translate(-15%, 0) !important;
+
+    -ms-transform-origin: 0 0 !important;
+    -moz-transform-origin: 0 0 !important;
+    -o-transform-origin: 0 0 !important;
+    -webkit-transform-origin: 0 0 !important;
+    transform-origin: 0 0 !important;
+  }
+
+  #cover-video {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    /*object-position: 0% 0%;*/
+    z-index: 1;
+  }
+
+  #cover {
+    position: relative;
+    background-size: cover;
+    color: black;
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+  }
+
+  #cover d-title {
+    position: absolute;
+    display: absolute;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    margin: auto;
+  }
+
+  /* Grid container styling */
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    /*max-width: 1000px;*/
+    margin: 0 auto;
+    /*padding: 20px;*/
+  }
+
+  /* Video styling */
+  .video-grid video {
+    width: 100%;
+    height: auto;
+  }
+
+  .styled-button {
+    background-color: #d3d3d3;
+    /* light gray */
+    color: #333333;
+    /* dark text for contrast */
+    font-size: 16px;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .styled-button a {
+    color: #333333;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .styled-button i {
+    font-size: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .styled-button:hover {
+    background-color: #bdbdbd;
+    /* slightly darker gray */
+  }
+
+  .styled-button:active {
+    transform: translateY(1px);
+  }
+
+  .myTitle {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    height: 100%;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+
+  .my-center-content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* Space between the image and text */
+  }
+
+  .at-end-ul li {
+    display: inline-flex;
+    ;
+  }
+
+  .myBtnDiv {
+    text-align: center;
+    gap: 10px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .myiframe {
+    width: 80vw;
+    height: 90vh;
+    position: fixed;
+    left: 10vw
+  }
+
+  .iframeContainerDiv {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    height: 90vh;
+  }
+
+  @media (max-width: 800px) {
+    .myiframe {
+
+      height: min(100vw, 100vh);
+      width: min(100vw, 100vh);
+      position: fixed;
+      left: calc((100vw - min(100vw, 100vh)) / 2)
+    }
+
+    .iframeContainerDiv {
+      position: relative;
+      height: min(100vw, 100vh);
+
+    }
+  }
+
+  .loadingDiv {
+    /*position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;*/
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*z-index: 100001; Make sure it covers other content */
+  }
+
+  /* Spinner */
+  .spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    animation: spin 1s linear infinite;
+    /*
+    z-index: 100001;
+    top: calc(50% - 32px);
+    top: calc(50% - 32px);
+    left: calc(50% - 24px  - 13vw);
+    width: 100%;
+    ;*/
+    border-radius: 50%;
+    height: 51px;
+    width: 51px;
+    margin: auto;
+    position: absolute;
+    left: calc(50% - 24px);
+
+
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+<!-- text-align: center; -->
+<!-- padding: 14rem 0 0 0; -->
+
+<body>
+  <!-- <distill-header></distill-header> -->
+  <d-front-matter>
+    <script id='distill-front-matter' type="text/json">{
+    "title": "Kinetix 10M",
+    "description": "Investigating the Training of General Agents through Open-Ended Physics-Based Control Tasks.",
+    "published": "May 23, 2026",
+    "equal_contribution": false,
+    "authors": [
+      {
+        "author":"Michael Beukman",
+        "authorURL":"https://twitter.com/mcbeukman",
+        "affiliations": [
+          {"name": "FLAIR, University of Oxford", "url":"https://foersterlab.com/"}]
+      },
+      {
+        "author":"Michael Matthews",
+        "authorURL":"https://twitter.com/mitrma",
+        "affiliations": [
+          {"name": "FLAIR, University of Oxford", "url":"https://foersterlab.com/"}]
+      },
+      {
+        "author":"Uljad Berdica",
+        "authorURL":"https://twitter.com/uljadb99",
+        "affiliations": [
+          {"name": "FLAIR, University of Oxford", "url":"https://foersterlab.com/"}]
+      },
+      {
+        "author":"Jakob Foerster",
+        "authorURL":"https://twitter.com/j_foerst",
+        "affiliations": [
+          {"name": "FLAIR, University of Oxford", "url":"https://foersterlab.com/"}]
+      }
+    ],
+    "katex": {
+      "delimiters": [
+      {"left": "$", "right": "$", "display": false},
+      {"left": "$$", "right": "$$", "display": true}
+      ]
+    }
+    
+  }</script>
+
+  </d-front-matter>
+  <div id="cover">
+    <video id="cover-video" autoplay="" muted="" loop="" playsinline="">
+      <source src="../assets/combined_wide17_midspeed.mp4" type="video/mp4">
+    </video>
+
+    <d-title class="myTitle">
+      <p>A massive dataset of expert trajectories in over 10M unique tasks</p>
+    </d-title>
+  </div>
+  <d-byline></d-byline>
+
+  <d-article>
+
+    <div>
+      <h2 id="introduction">Introduction</h2>
+      <p>
+        Current generalist agents are inevitably pre-trained on massive datasets spanning a wide range of tasks, and
+        then perhaps fine-tuned online using RL.
+
+        <a href="https://kinetix-env.github.io/">Kinetix</a> allows the studying of large-scale, generalist agents in an
+        online setting. Here we are releasing a large offline dataset of expert trajectories from over 10M unique
+        environments.
+
+
+        This dataset was generated by training per-level expert policies using PPO, and then collecting some
+        trajectories from each policy.
+      </p>
+    </div>
+
+
+
+
+    <div>
+      <h2 id="dataset">Dataset</h2>
+      <p>
+        We have a few different available datasets. These are split by environment size (how many entities are there in
+        a scene) and whether or not the data is grouped according to trajectories or transitions.
+      </p>
+
+      <h3>Dataset Collection Process</h3>
+      We train specialist RL agents per level for a fixed number of timesteps and then collect a single trajectory per
+      level to save to the dataset. Since not all environments are solvable, these experts do not always succeed in the
+      task. For the released dataset, we select only the optimal trajectories from solvable tasks.
+      <h3>Dataset Details</h3>
+      We have 5 different datasets, corresponding to different environment sizes (s, m, l), and how long we train each
+      expert policy for, either 1M or 10M timesteps.
+
+      <p><b>Unique Levels</b> is the number of distinct levels for which trajectories were collected; <b>Transitions</b>
+        is the total number of individual environment steps across all trajectories.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Expert Training Time</th>
+            <th>Size</th>
+            <th>Unique Levels</th>
+            <th>Transitions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>1M</code></td>
+            <td><code>s</code></td>
+            <td>6M</td>
+            <td>1.5B</td>
+          </tr>
+          <tr>
+            <td><code>1M</code></td>
+            <td><code>m</code></td>
+            <td>3.5M</td>
+            <td>884M</td>
+          </tr>
+          <tr>
+            <td><code>1M</code></td>
+            <td><code>l</code></td>
+            <td>1M</td>
+            <td>268M</td>
+          </tr>
+          <tr>
+            <td><code>10M</code></td>
+            <td><code>s</code></td>
+            <td>637k</td>
+            <td>163M</td>
+          </tr>
+          <tr>
+            <td><code>10M</code></td>
+            <td><code>m</code></td>
+            <td>422k</td>
+            <td>108M</td>
+          </tr>
+          <tr>
+            <td><b>Total</b></td>
+            <td></td>
+            <td><b>11.5M</b></td>
+            <td><b>3B</b></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Dynamic Rendering</h3>
+      <p>
+        One benefit of Kinetix is that we can specify the rendering function dynamically at runtime, meaning that the
+        same data can be used to train symbolic or pixel-based agents.
+      </p>
+    </div>
+
+
+    <div>
+      <h2 id="usage">Usage</h2>
+      We have updated the <a href="https://github.com/FLAIROx/Kinetix">Kinetix</a> repository to include utilities to
+      read the data, and train agents on it.
+    </div>
+
+
+
+    <div>
+      <h2 id="conclusions">Conclusion</h2>
+      <p>
+        If you are interested in training using large-scale behaviour cloning, or if you wanted to train a video or
+        world model, now you can easily do so.
+      </p>
+    </div>
+
+  </d-article>
+
+  <d-appendix>
+
+
+    <div>
+      <h2>Acknowledgements</h2>
+      <p>This is based on the <a href="https://github.com/distillpub/template">Distill Template</a> and the <a
+          href="accelagent.github.io/">ACCEL Blog</a>.
+        This work was provided by the Isambard-AI National AI Research Resource, under the project "FLAIR 2025 Moonshot
+        Projects".
+        Thank you to Alex Goldie for useful discussions.
+
+      </p>
+    </div>
+  </d-appendix>
+
+</body>
