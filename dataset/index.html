@@ -245,22 +245,42 @@
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(2, 1fr);
   }
-  .cover-gif-strip.opt-d .cover-gif-panel { overflow: hidden; }
+
+  .cover-gif-strip.opt-d .cover-gif-panel {
+    overflow: hidden;
+  }
 
   /* Tablet: 6 cols x 2 rows, hide panels 13–20 */
   @media (max-width: 900px) {
-    .cover-gif-strip.opt-d { grid-template-columns: repeat(6, 1fr); }
-    .cover-gif-strip.opt-d .cover-gif-panel:nth-child(n+13) { display: none; }
+    .cover-gif-strip.opt-d {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .cover-gif-strip.opt-d .cover-gif-panel:nth-child(n+13) {
+      display: none;
+    }
   }
+
   /* Mobile: 4 cols x 2 rows, hide panels 9–20 */
   @media (max-width: 560px) {
-    .cover-gif-strip.opt-d { grid-template-columns: repeat(4, 1fr); }
-    .cover-gif-strip.opt-d .cover-gif-panel:nth-child(n+9) { display: none; }
+    .cover-gif-strip.opt-d {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .cover-gif-strip.opt-d .cover-gif-panel:nth-child(n+9) {
+      display: none;
+    }
   }
+
   /* Small mobile: 2 cols x 2 rows, hide panels 5–20 */
   @media (max-width: 320px) {
-    .cover-gif-strip.opt-d { grid-template-columns: repeat(2, 1fr); }
-    .cover-gif-strip.opt-d .cover-gif-panel:nth-child(n+5) { display: none; }
+    .cover-gif-strip.opt-d {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cover-gif-strip.opt-d .cover-gif-panel:nth-child(n+5) {
+      display: none;
+    }
   }
 
   .cover-gif-panel img {
@@ -546,15 +566,17 @@
           full learning trajectories from 30000 tasks.</d-footnote>
 
 
-        Here, we focus on task <em>diversity</em> and release a large-scale offline dataset for open-ended
-        physics-based control that contains
-        3 billion transitions across more than <b>11 million unique environments</b>.
+        Here, we focus on task <em>diversity</em> and release a large-scale offline dataset for the open-ended
+        physics-based environment <a href="https://kinetix-env.github.io/">Kinetix</a> that contains
+        3 billion transitions across more than <b>11 million unique environments</b>. Each task is a procedurally
+        generated physics problem where the goal is to make the green and blue objects touch, without green touching red
       </p>
       <p>
-        <a href="https://kinetix-env.github.io/">Kinetix</a> is a JAX-based physics engine where tasks are
-        procedurally generated 2D rigid-body control problems. We generated an offline dataset by training per-level
-        specialist policies using PPO, and collecting trajectories
-        from each policy. Only trajectories from solvable levels where the expert succeeded are included.
+        <!-- is a JAX-based physics engine where tasks are -->
+        <!-- procedurally generated 2D rigid-body control problems.  -->
+        <!-- We generated an offline dataset by training per-level -->
+        <!-- specialist policies using PPO, and collecting trajectories -->
+        <!-- from each policy. Only trajectories from solvable levels where the expert succeeded are included. -->
       </p>
     </div>
 
@@ -598,7 +620,7 @@
 
       <h3>Dataset Collection Process</h3>
       We train specialist RL agents per level for a fixed number of timesteps and then collect a single trajectory per
-      level to save to the dataset. Since not all environments are solvable, these experts do not always succeed in the
+      level. Since not all environments are solvable, these experts do not always succeed in the
       task. For the released dataset, we select only the optimal trajectories from solvable tasks (about 50% of tasks
       are solvable).
       <h3>Dataset Details</h3>
@@ -668,7 +690,7 @@
         same data can be used to train symbolic or pixel-based agents.
       </p>
 
-      <b>Easy Evaluations and White-box access</b>
+      <b>Easy Evaluations and white-box access</b>
       <p>
         Since we store the raw environment state, we can evaluate agents online from any part of a trajectory, and
         evaluate how the trained agent performs on (a) the training levels; (b) unseen levels sampled from the same
@@ -690,6 +712,8 @@
         Each batch has shape <code>(batch_size, T, *dims)</code>, with the full <code>env_state</code> included
         so you can re-render observations on-the-fly in any observation modality.
       </p>
+
+      <!-- beautify ignore:start -->
       <d-code block language="python">
         from kinetix.data import TrajectoryDatasetManager
         from kinetix.environment import EnvParams, static_env_params_from_size
@@ -699,10 +723,10 @@
         static_env_params = static_env_params_from_size("m")
 
         dataset = TrajectoryDatasetManager(
-        dataset_dir="/path/to/traj_data",
-        batch_size=256,
-        val_batch_size=256,
-        seed=0,
+          dataset_dir="/path/to/traj_data",
+          batch_size=256,
+          val_batch_size=256,
+          seed=0,
         )
 
         batch = dataset.load_next_batch()
@@ -716,18 +740,21 @@
         # batch.action_mask (B, T, 6): which joints/thrusters are active
         # batch.done (B, T): True at episode end
       </d-code>
+      <!-- beautify ignore:end -->
 
       <h3>Training a BC agent</h3>
       <p>
         A full offline BC training script is provided in <code>experiments/offline_bc.py</code>. Run it as follows, or
         modify as needed.
       </p>
+      <!-- beautify ignore:start -->
       <d-code block language="bash">
         python experiments/offline_bc.py \
-        dataset_dir=/path/to/data \
-        learning.lr=3e-4 \
-        env_size=m
+          dataset_dir=/path/to/data \
+          learning.lr=3e-4 \
+          env_size=m
       </d-code>
+      <!-- beautify ignore:end -->
     </div>
 
 
@@ -739,7 +766,8 @@
         paper</a>.
       While the performance is not quite as good as when using <a href="https://arxiv.org/abs/2603.06009">1M parallel
         environments</a>, the compute difference is substantial: 24
-      L40s hours vs about 30k A100 hours. Further, using the BC-trained policy as a starting point for PPO fine-tuning is a further way to save a lot of compute.
+      L40s hours vs about 30k A100 hours. Further, using the BC-trained policy as a starting point for PPO fine-tuning
+      is a further way to save a lot of compute.
 
       <img width="80%" style="display:block; margin:auto" src="assets/bc_results.png">
     </div>
@@ -766,7 +794,7 @@
         Compute for this work was provided by the Isambard-AI National AI Research Resource, under the project "FLAIR
         2025 Moonshot
         Projects".
-        Thank you to Alex Goldie for useful discussions.
+        Thank you to Alex Goldie and Jarek Liessen for useful discussions.
 
       </p>
     </div>
