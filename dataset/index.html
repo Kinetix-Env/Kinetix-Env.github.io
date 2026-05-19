@@ -476,8 +476,8 @@
   <!-- <distill-header></distill-header> -->
   <d-front-matter>
     <script id='distill-front-matter' type="text/json">{
-    "title": "Kinetix 10M",
-    "description": "Investigating the Training of General Agents through Open-Ended Physics-Based Control Tasks.",
+    "title": "Kinetix Offline",
+    "description": "A large-scale offline dataset of 3B expert transitions across 11M unique physics-based tasks.",
     "published": "May 23, 2026",
     "equal_contribution": false,
     "authors": [
@@ -540,7 +540,7 @@
       <div class="cover-gif-panel"><img src="assets/dataset_gifs/l_037.gif" alt=""></div>
     </div>
     <d-title class="myTitle">
-      <p>A massive dataset of expert trajectories in over 10M unique tasks</p>
+      <p>3 billion expert transitions across 11 million unique physics-based tasks</p>
     </d-title>
   </div>
   <d-byline></d-byline>
@@ -572,30 +572,15 @@
       <h2 id="introduction">Introduction</h2>
       <p>
         Training generalist agents typically requires massive diverse datasets, but most offline RL datasets cover at
-        most tens of thousands of tasks. Here we release a dataset of 3 billion expert transitions across 11 million
+        most tens of thousands of tasks.<d-footnote>A notable example is <a href="https://arxiv.org/pdf/2406.08973">XLand-100B</a>,
+        which contains full learning trajectories from 30,000 tasks.</d-footnote> Here we release a dataset of 3 billion expert transitions across 11 million
         unique physics-based tasks, enabling offline RL at a scale not previously available.
 
-        As one example of what this dataset enables, we show that behaviour cloning + PPO fine-tuning leads to strong
-        performance at a fraction of the compute required to train PPO from scratch.
+        All tasks come from <a href="https://kinetix-env.github.io/">Kinetix</a>, a procedurally generated 2D physics
+        environment where the goal is to make the green and blue objects touch without green touching red.
 
-        <!-- Current generalist agents are inevitably pre-trained on massive datasets spanning a wide range of tasks, with
-        potential
-        RL fine-tuning afterwards. Existing offline datasets, such as D4RL, tend to cover tens to
-        hundreds of tasks.<d-footnote>A notable exception being <a
-            href="https://arxiv.org/pdf/2406.08973">XLand-100B</a>, which contains
-          full learning trajectories from 30000 tasks.</d-footnote> -->
-
-
-        All of these tasks are <a href="https://kinetix-env.github.io/">Kinetix</a> environments. Each task is a
-        procedurally
-        generated physics problem where the goal is to make the green and blue objects touch, without green touching red
-      </p>
-      <p>
-        <!-- is a JAX-based physics engine where tasks are -->
-        <!-- procedurally generated 2D rigid-body control problems.  -->
-        <!-- We generated an offline dataset by training per-level -->
-        <!-- specialist policies using PPO, and collecting trajectories -->
-        <!-- from each policy. Only trajectories from solvable levels where the expert succeeded are included. -->
+        As a first demonstration of what this enables, we show that behaviour cloning followed by PPO fine-tuning
+        reaches strong performance at a fraction of the compute required to train PPO from scratch.
       </p>
     </div>
 
@@ -605,8 +590,8 @@
     <div>
       <h2 id="dataset">Dataset</h2>
       <p>
-        We have a few different available datasets. These are split by environment size (how many entities are there in
-        a scene) and for how long the experts were trained for.
+        The dataset comes in five splits, varying by environment size (small/medium/large) and expert training budget
+        (1M or 10M steps).
 
       <div
         style="display: grid; grid-template-columns: 2em repeat(3, 1fr); gap: 6px; margin-bottom: 1.5em; align-items: center;">
@@ -706,14 +691,15 @@
       <h3>Why use this dataset?</h3>
       <b>Massive Task Diversity</b>
       <p>
-        Having more than 10M unique levels provides the opportunity to investigate training at a massive scale, and
-        solve the specific problems that occur when we are trying to learn on millions of tasks.
+        With 10M+ unique levels, this dataset makes it possible to study how offline agent performance scales with task
+        diversity, and what challenges occur when having millions of tasks.
       </p>
 
       <b>Dynamic Rendering</b>
       <p>
-        One benefit of Kinetix is that we can specify the rendering function dynamically at runtime, meaning that the
-        same data can be used to train symbolic or pixel-based agents.
+        We store raw environment state rather than pre-rendered frames, so the full 3B-transition dataset fits in 326
+        GB. The rendering function is specified at runtime, meaning the same data
+        can train symbolic or pixel-based agents simply by swapping the renderer.
       </p>
 
       <b>Easy Evaluations and white-box access</b>
@@ -805,25 +791,30 @@
 
     <div>
       <h2 id="results">Results</h2>
-      Here are some initial results: doing behaviour cloning on this dataset is a pretty cheap way to get a relatively
-      high-performing agent. In particular, after less than 24 GPU hours, the agent's performance is already much better
-      than the from-scratch PPO training performance we had in our <a href="https://arxiv.org/abs/2410.23208">original
-        paper</a>.
-      While the performance is not quite as good as when using <a href="https://arxiv.org/abs/2603.06009">1M parallel
+      <p>
+        Behaviour cloning on this dataset is an effective way to bootstrap a strong generalist agent.
+        After fewer than 24 GPU-hours of training, a BC agent already outperforms the from-scratch PPO baseline from our
+        <a href="https://arxiv.org/abs/2410.23208">original paper</a>.
+        
+      While the performance is not as high as when using <a href="https://arxiv.org/abs/2603.06009">1M parallel
         environments</a>, the compute difference is substantial: 24
-      L40s hours vs about 30k A100 hours. Further, using the BC-trained policy as a starting point for PPO fine-tuning
+      L40s hours vs about 30k A100 hours. Using the BC-trained policy as a starting point for PPO fine-tuning
       is a further way to save a lot of compute.
+      </p>
 
-      <img width="80%" style="display:block; margin:auto" src="assets/bc_results.png">
+      <figure>
+        <img width="80%" style="display:block; margin:auto" src="assets/bc_results.png">
+        <figcaption style="text-align:center; margin-top:0.5em;">
+          [TODO: caption — what is the y-axis, what is the evaluation set?]
+        </figcaption>
+      </figure>
     </div>
 
     <div>
       <h2 id="conclusions">Conclusion</h2>
       <p>
-        We release 3B expert transitions across 11M unique levels in Kinetix, along with data loaders and a full BC
-        training pipeline.
-        We hope this enables future research into generalist agents, large-scale BC, or world models. If you are
-        interested or have any questions, please do reach out!
+        We hope this dataset enables cost-effective research into large-scale offline learning, and how task diversity influences downstream performance. But the dataset can be used for other things too, like training world models.
+        If you have questions or want to collaborate, please reach out!
       </p>
     </div>
 
