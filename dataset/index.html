@@ -548,6 +548,19 @@
   <d-article>
 
     <div>
+      <div class="myBtnDiv">
+        <a style="border: none" href="https://github.com/FLAIROx/Kinetix"><button class="styled-button"
+            style="flex-grow: 1; min-width: 25px; min-height: 25px; align-items: center; justify-content: center; display: inline-flex;"><img
+              width="20px" src="../assets/github-mark.png" style="margin-right: 5px;">
+            Code</button></a>
+        <a style="border: none" href="https://huggingface.co/datasets/mbeukman/Kinetix-Offline"><button
+            class="styled-button"
+            style="flex-grow: 1; min-width: 25px; min-height: 25px; align-items: center; justify-content: center; display: inline-flex; font-size: 18px; gap: 6px;">
+            🤗 Dataset</button></a>
+        <a style="border: none" href="https://arxiv.org/abs/2410.23208"><button class="styled-button"
+            style="flex-grow: 1; min-width: 25px; min-height: 25px; align-items: center; justify-content: center; display: inline-flex; font-size: 18px; gap: 6px;">
+            📄 Paper</button></a>
+      </div>
       <h2 id="tldr">TL; DR</h2>
       <p>
         We release a dataset of per-level expert trajectories in Kinetix, for over 11M unique tasks, totalling around 3B
@@ -558,17 +571,23 @@
     <div>
       <h2 id="introduction">Introduction</h2>
       <p>
-        Current generalist agents are inevitably pre-trained on massive datasets spanning a wide range of tasks, with
+        Training generalist agents typically requires massive diverse datasets, but most offline RL datasets cover at
+        most tens of thousands of tasks. Here we release a dataset of 3 billion expert transitions across 11 million
+        unique physics-based tasks, enabling offline RL at a scale not previously available.
+
+        As one example of what this dataset enables, we show that behaviour cloning + PPO fine-tuning leads to strong
+        performance at a fraction of the compute required to train PPO from scratch.
+
+        <!-- Current generalist agents are inevitably pre-trained on massive datasets spanning a wide range of tasks, with
         potential
         RL fine-tuning afterwards. Existing offline datasets, such as D4RL, tend to cover tens to
         hundreds of tasks.<d-footnote>A notable exception being <a
             href="https://arxiv.org/pdf/2406.08973">XLand-100B</a>, which contains
-          full learning trajectories from 30000 tasks.</d-footnote>
+          full learning trajectories from 30000 tasks.</d-footnote> -->
 
 
-        Here, we focus on task <em>diversity</em> and release a large-scale offline dataset for the open-ended
-        physics-based environment <a href="https://kinetix-env.github.io/">Kinetix</a> that contains
-        3 billion transitions across more than <b>11 million unique environments</b>. Each task is a procedurally
+        All of these tasks are <a href="https://kinetix-env.github.io/">Kinetix</a> environments. Each task is a
+        procedurally
         generated physics problem where the goal is to make the green and blue objects touch, without green touching red
       </p>
       <p>
@@ -631,7 +650,7 @@
       <table style="margin: 0 auto;">
         <thead>
           <tr>
-            <th>Expert Training Time</th>
+            <th>Expert Training Steps</th>
             <th>Size</th>
             <th>Unique Levels</th>
             <th>Transitions</th>
@@ -712,6 +731,25 @@
         We've updated the main <a href="https://github.com/FLAIROx/Kinetix">Kinetix</a> repository to include
         ready-to-use data loaders, with a full example contained in <code>examples/example_data_loading.py</code>.
       </p>
+
+      <h3>Downloading the Dataset</h3>
+      <p>The dataset is hosted on <a href="https://huggingface.co/datasets/mbeukman/Kinetix-Offline">Hugging Face</a>.
+        Download the entire dataset (~326 GB) or a single split:</p>
+      <!-- beautify ignore:start -->
+      <d-code block language="bash">
+        # Entire dataset (~326 GB)
+        hf download mbeukman/Kinetix-Offline \
+          --repo-type dataset \
+          --local-dir ./data
+
+        # Single split, e.g. 10M-step experts, medium size (~11 GB)
+        hf download mbeukman/Kinetix-Offline \
+          --repo-type dataset \
+          --local-dir ./data \
+          --include "10M/m/*"
+      </d-code>
+      <!-- beautify ignore:end -->
+      <p>Replace <code>1M/m</code> with any <code>{policy_steps}/{size}</code> combination from the table above.</p>
 
       <h3>Loading Data</h3>
       <p>
