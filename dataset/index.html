@@ -468,6 +468,18 @@
       transform: rotate(360deg);
     }
   }
+
+  d-byline .byline > div:last-child {
+    display: none;
+  }
+
+  @media(min-width: 768px) {
+    d-byline .byline {
+      grid-template-columns: repeat(4, auto);
+      justify-content: center;
+      column-gap: 2em;
+    }
+  }
 </style>
 <!-- text-align: center; -->
 <!-- padding: 14rem 0 0 0; -->
@@ -557,13 +569,10 @@
             class="styled-button"
             style="flex-grow: 1; min-width: 25px; min-height: 25px; align-items: center; justify-content: center; display: inline-flex; font-size: 18px; gap: 6px;">
             🤗 Dataset</button></a>
-        <a style="border: none" href="https://arxiv.org/abs/2410.23208"><button class="styled-button"
-            style="flex-grow: 1; min-width: 25px; min-height: 25px; align-items: center; justify-content: center; display: inline-flex; font-size: 18px; gap: 6px;">
-            📄 Paper</button></a>
       </div>
       <h2 id="tldr">TL; DR</h2>
       <p>
-        We release a dataset of per-level expert trajectories in Kinetix, for over 11M unique tasks, totalling around 3B
+        We release a dataset of per-level expert trajectories in Kinetix for over 11M unique tasks, totalling around 3B
         transitions.
       </p>
     </div>
@@ -748,7 +757,7 @@
       <d-code block language="python">
         from kinetix.data import TrajectoryDatasetManager
         from kinetix.environment import EnvParams, static_env_params_from_size
-        from kinetix.render.renderer_pixels import make_render_pixels
+        from kinetix.render import make_render_pixels
         import jax
 
         static_env_params = static_env_params_from_size("m")
@@ -796,10 +805,8 @@
         After fewer than 24 GPU-hours of training, a BC agent already outperforms the from-scratch PPO baseline from our
         <a href="https://arxiv.org/abs/2410.23208">original paper</a>.
         
-      While the performance is not as high as when using <a href="https://arxiv.org/abs/2603.06009">1M parallel
-        environments</a>, the compute difference is substantial: 24
-      L40s hours vs about 30k A100 hours. Using the BC-trained policy as a starting point for PPO fine-tuning
-      is a further way to save a lot of compute.
+      
+      While not as strong as <a href="https://arxiv.org/abs/2603.06009">recent developments</a> made in Kinetix, BC remains a compute-efficient way to warm start a policy for online fine-tuning.
       </p>
 
       <figure>
@@ -813,7 +820,8 @@
     <div>
       <h2 id="conclusions">Conclusion</h2>
       <p>
-        We hope this dataset enables cost-effective research into large-scale offline learning, and how task diversity influences downstream performance. But the dataset can be used for other things too, like training world models.
+        We hope this dataset enables cost-effective research into large-scale offline learning and how task diversity influences downstream performance. 
+        But the dataset is general enough to be used for other purposes as well, like training world models, level generators and more.
         If you have questions or want to collaborate, please reach out!
       </p>
     </div>
